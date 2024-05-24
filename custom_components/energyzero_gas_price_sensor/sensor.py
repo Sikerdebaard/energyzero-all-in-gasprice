@@ -104,6 +104,7 @@ def get_current_gas_price(tz='Europe/Amsterdam', newprices_hour=6):
 class EnergyZeroGasPriceSensor(SensorEntity):
     def __init__(self, hass: HomeAssistant, name, price_type):
         _LOGGER.warn("Initializing sensor: %s with type: %s", name, price_type)
+        super().__init__()
         self.hass = hass
         self._name = name
         self._price_type = price_type
@@ -115,7 +116,7 @@ class EnergyZeroGasPriceSensor(SensorEntity):
 
     @property
     def name(self):
-        return self._name
+        return self._price_type
 
     @property
     def state(self):
@@ -123,7 +124,7 @@ class EnergyZeroGasPriceSensor(SensorEntity):
 
     @property
     def unit_of_measurement(self):
-        return "EUR"
+        return "€/m3"
 
     @property
     def device_class(self):
