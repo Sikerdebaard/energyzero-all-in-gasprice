@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 
 import requests
 import pytz
+import logging
 
 from homeassistant.components.sensor import (
     DOMAIN as SENSOR_DOMAIN,
