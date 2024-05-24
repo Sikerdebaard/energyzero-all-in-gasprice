@@ -32,7 +32,7 @@ async def setup_sensors(hass: HomeAssistant):
     ]
 
     data = await hass.async_add_executor_job(get_current_gas_price)
-    _LOGGER.info("Fetched gas price data: %s", data)
+    _LOGGER.warn("Fetched gas price data: %s", data)
     current_data = data.get('data', {}).get('current', {})
     prices = current_data.get('prices', [])
     if prices:
@@ -41,7 +41,7 @@ async def setup_sensors(hass: HomeAssistant):
             name = cost.get('name', 'Unknown')
             entities.append(EnergyZeroGasPriceSensor(hass, f"Gas Price {name}", f"cost_{name.replace(' ', '_').lower()}"))
 
-    _LOGGER.info("Sensors setup complete with entities: %s", entities)
+    _LOGGER.warn("Sensors setup complete with entities: %s", entities)
     return entities
 
 def _query_energyzero_gasprice(gasCurrentFrom, gasCurrentTill):
