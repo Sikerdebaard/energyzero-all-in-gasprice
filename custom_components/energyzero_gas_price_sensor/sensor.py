@@ -11,7 +11,7 @@ from .const import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 # Update once a day
-MIN_TIME_BETWEEN_UPDATES = timedelta(hours=1)
+MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=15)
 
 ATTRIBUTION = "Data provided by EnergyZero"
 
@@ -177,5 +177,5 @@ class EnergyZeroGasPriceSensor(SensorEntity):
         _LOGGER.warn("Executing async_update for sensor: %s", self._name)
         # Ensure the update happens around 06:00 Amsterdam time
         now = datetime.now(pytz.timezone('Europe/Amsterdam'))
-        if now.hour == 6 and now.minute < 5:
+        if self._state is None or (now.hour == 6 and now.minute < 5):
             await self._update()
