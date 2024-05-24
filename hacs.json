@@ -11,5 +11,6 @@
   "config_flow": false,
   "iot_class": "cloud_polling",
   "version": "1.0.0",
-  "render_readme": true
+  "render_readme": true,
+  "image": "https://raw.githubusercontent.com/Sikerdebaard/energyzero-all-in-gasprice/main/images/logo.png"
 }

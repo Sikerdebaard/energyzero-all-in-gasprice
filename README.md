@@ -1,5 +1,7 @@
 # EnergyZero Gas Price Sensor
 
+![EnergyZero Gas Price Sensor](https://raw.githubusercontent.com/Sikerdebaard/energyzero-all-in-gasprice/main/images/logo.png)
+
 This Home Assistant custom component fetches and displays the current gas prices from the EnergyZero API, including the market price, all-in price, and additional cost components such as energy tax and purchasing cost.
 
 ## Installation
