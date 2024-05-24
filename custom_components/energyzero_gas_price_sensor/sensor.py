@@ -47,14 +47,21 @@ SENSORS: tuple[EnergyZeroGasPriceSensorEntityDescription, ...] = (
         name="Gas Price Market",
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=f"{CURRENCY_EURO}/{UnitOfVolume.CUBIC_METERS}",
-        value_fn=lambda data: data.get('market_incl'),
+        value_fn=lambda data: next(
+            (price['energyPriceIncl'] for price in data.get('data', {}).get('current', {}).get('prices', []) if price['type'] == 'Gas'),
+            None
+        ),
     ),
     EnergyZeroGasPriceSensorEntityDescription(
         key="all_in",
         name="Gas Price All-in",
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=f"{CURRENCY_EURO}/{UnitOfVolume.CUBIC_METERS}",
-        value_fn=lambda data: data.get('all_in'),
+        value_fn=lambda data: next(
+            (price['energyPriceIncl'] + sum(cost['priceIncl'] for cost in price.get('additionalCosts', []))
+             for price in data.get('data', {}).get('current', {}).get('prices', []) if price['type'] == 'Gas'),
+            None
+        ),
     ),
 )
 
