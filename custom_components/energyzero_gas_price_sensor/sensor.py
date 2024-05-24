@@ -4,7 +4,6 @@ from datetime import datetime, timedelta, time
 import pytz
 
 from homeassistant.components.sensor import PLATFORM_SCHEMA, SensorEntity, SensorDeviceClass
-from homeassistant.helpers.entity import Entity
 from homeassistant.util import Throttle
 from homeassistant.core import HomeAssistant
 from .const import DOMAIN
@@ -12,7 +11,7 @@ from .const import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 # Update once a day
-MIN_TIME_BETWEEN_UPDATES = timedelta(days=1)
+MIN_TIME_BETWEEN_UPDATES = timedelta(hours=1)
 
 ATTRIBUTION = "Data provided by EnergyZero"
 
