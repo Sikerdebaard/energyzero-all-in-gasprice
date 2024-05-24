@@ -3,7 +3,9 @@
     "name": "Energyzero All-In Gas Price HACS integration for Home Assistant",
     "version": "1",
     "documentation": "https://github.com/Sikerdebaard/energyzero-all-in-gasprice",
-    "requirements": ["pytz"],
+    "requirements": ["pytz", "requests"],
     "dependencies": [],
-    "codeowners": ["@Sikerdebaard"]
+    "codeowners": ["@Sikerdebaard"],
+    "config_flow": true,
+    "iot_class": "cloud_polling"
   }

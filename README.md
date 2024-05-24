@@ -17,19 +17,22 @@ This Home Assistant custom component fetches and displays the current gas prices
 ### Manual Installation
 
 1. Download the `energyzero-all-in-gasprice` repository.
-2. Copy the `custom_components/ezgas` directory to your Home Assistant's `custom_components` directory.
+2. Copy the `energyzero_gas_price_sensor` directory to your Home Assistant's `custom_components` directory.
 3. Restart Home Assistant.
 
 ## Configuration
 
-Add the following to your `configuration.yaml` to enable the integration:
-
-```yaml
-sensor:
-  - platform: energyzero_gas_price_sensor
-```
+1. Go to the Home Assistant UI.
+2. Navigate to `Configuration` > `Devices & Services`.
+3. Click `Add Integration` and search for `EnergyZero Gas Price`.
+4. Follow the prompts to complete the setup.
 
 The integration will create sensors for the market price (including VAT), the all-in price (including VAT and additional costs), and dynamic sensors for each additional cost component.
+
+## Sensors
+
+- `sensor.gas_price_market`: The market price of gas including VAT.
+
 
 ## Sensors
 
