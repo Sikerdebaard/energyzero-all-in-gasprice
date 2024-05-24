@@ -1,6 +1,6 @@
 {
     "domain": "energyzero_gas_price_sensor",
-    "name": "EnergyZero All-In Gas Price HACS integration for Home Assistant",
+    "name": "EnergyZero Gas Price Sensor",
     "version": "1",
     "documentation": "https://github.com/Sikerdebaard/energyzero-all-in-gasprice",
     "requirements": ["pytz", "requests"],

@@ -3,7 +3,7 @@ import logging
 from datetime import datetime, timedelta, time
 import pytz
 
-from homeassistant.components.sensor import PLATFORM_SCHEMA, SensorDeviceClass
+from homeassistant.components.sensor import PLATFORM_SCHEMA, SensorEntity
 from homeassistant.helpers.entity import Entity
 from homeassistant.util import Throttle
 from homeassistant.core import HomeAssistant
@@ -17,18 +17,22 @@ MIN_TIME_BETWEEN_UPDATES = timedelta(days=1)
 ATTRIBUTION = "Data provided by EnergyZero"
 
 async def async_setup_platform(hass: HomeAssistant, config, async_add_entities, discovery_info=None):
+    _LOGGER.debug("Setting up platform...")
     async_add_entities(await setup_sensors(hass))
 
 async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
+    _LOGGER.debug("Setting up entry for sensors...")
     async_add_entities(await setup_sensors(hass))
 
 async def setup_sensors(hass: HomeAssistant):
+    _LOGGER.debug("Setting up sensors...")
     entities = [
         EnergyZeroGasPriceSensor(hass, "Gas Price Market", "market_incl"),
         EnergyZeroGasPriceSensor(hass, "Gas Price All-in", "all_in")
     ]
 
     data = await hass.async_add_executor_job(get_current_gas_price)
+    _LOGGER.debug("Fetched gas price data: %s", data)
     current_data = data.get('data', {}).get('current', {})
     prices = current_data.get('prices', [])
     if prices:
@@ -37,6 +41,7 @@ async def setup_sensors(hass: HomeAssistant):
             name = cost.get('name', 'Unknown')
             entities.append(EnergyZeroGasPriceSensor(hass, f"Gas Price {name}", f"cost_{name.replace(' ', '_').lower()}"))
 
+    _LOGGER.debug("Sensors setup complete with entities: %s", entities)
     return entities
 
 def _query_energyzero_gasprice(gasCurrentFrom, gasCurrentTill):
@@ -93,7 +98,7 @@ def get_current_gas_price(tz='Europe/Amsterdam', newprices_hour=6):
         gasCurrentTill=dt_tomorrow.isoformat(),
     )
 
-class EnergyZeroGasPriceSensor(Entity):
+class EnergyZeroGasPriceSensor(SensorEntity):
     def __init__(self, hass: HomeAssistant, name, price_type):
         self.hass = hass
         self._name = name
@@ -127,6 +132,7 @@ class EnergyZeroGasPriceSensor(Entity):
     async def _update(self):
         try:
             data = await self.hass.async_add_executor_job(get_current_gas_price)
+            _LOGGER.debug("Fetched gas price data in update: %s", data)
             current_data = data.get('data', {}).get('current', {})
             prices = current_data.get('prices', [])
             if not prices:
@@ -161,6 +167,7 @@ class EnergyZeroGasPriceSensor(Entity):
             _LOGGER.error("Error fetching gas price: %s", e)
 
     async def async_update(self):
+        _LOGGER.debug("Executing async_update for sensor: %s", self._name)
         # Ensure the update happens around 06:00 Amsterdam time
         now = datetime.now(pytz.timezone('Europe/Amsterdam'))
         if now.hour == 6 and now.minute < 5:
