@@ -4,6 +4,13 @@
 
 This Home Assistant custom component fetches and displays the current gas prices from the EnergyZero API, including the market price, all-in price, and additional cost components such as energy tax and purchasing cost.
 
+## Features
+
+- Fetches current gas prices from the EnergyZero API
+- Displays market price, all-in price, and additional cost components
+- Provides sensors for Home Assistant
+
+
 ## Installation
 
 ### HACS (Home Assistant Community Store)
