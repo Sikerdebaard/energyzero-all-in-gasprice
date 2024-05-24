@@ -3,11 +3,9 @@ import logging
 from datetime import datetime, timedelta, time
 import pytz
 
-from homeassistant.components.sensor import PLATFORM_SCHEMA
-from homeassistant.const import DEVICE_CLASS_MONETARY
+from homeassistant.components.sensor import PLATFORM_SCHEMA, SensorDeviceClass
 from homeassistant.helpers.entity import Entity
 from homeassistant.util import Throttle
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.core import HomeAssistant
 from .const import DOMAIN
 
@@ -120,7 +118,7 @@ class EnergyZeroGasPriceSensor(Entity):
 
     @property
     def device_class(self):
-        return DEVICE_CLASS_MONETARY
+        return SensorDeviceClass.MONETARY
 
     @property
     def extra_state_attributes(self):
