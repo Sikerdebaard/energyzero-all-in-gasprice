@@ -1,5 +1,5 @@
 {
-    "domain": "energyzero_gas_price_sensor",
+    "domain": "energyzero_gql_sensor",
     "name": "EnergyZero Gas Price Sensor",
     "version": "1",
     "documentation": "https://github.com/Sikerdebaard/energyzero-all-in-gasprice",
