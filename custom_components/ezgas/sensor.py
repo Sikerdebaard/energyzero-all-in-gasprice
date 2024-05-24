@@ -28,7 +28,9 @@ async def setup_sensors(hass: HomeAssistant):
         EnergyZeroGasPriceSensor(hass, "Gas Price All-in", "all_in")
     ]
 
+    _LOGGER.info('Setup!')
     data = await hass.async_add_executor_job(get_current_gas_price)
+    _LOGGER.info(data)
     current_data = data.get('data', {}).get('current', {})
     prices = current_data.get('prices', [])
     if prices:
