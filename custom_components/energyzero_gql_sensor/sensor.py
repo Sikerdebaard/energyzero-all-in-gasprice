@@ -83,7 +83,7 @@ async def async_setup_entry(
 
     # Fetch additional sensors from the initial data
     data = coordinator.data
-    _LOGGER.warn("Fetched gas price data: %s", data)
+    _LOGGER.info("Fetched gas price data: %s", data)
     current_data = data.get('data', {}).get('current', {})
     prices = current_data.get('prices', [])
     if prices:
