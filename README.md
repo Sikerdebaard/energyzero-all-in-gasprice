@@ -45,9 +45,9 @@ The integration will create sensors for the market price (including VAT), the al
 
 ## Sensors
 
-- `sensor.gas_price_market`: The market price of gas including VAT.
-- `sensor.gas_price_all_in`: The all-in price of gas including VAT and all additional costs.
-- Additional sensors for each dynamic cost component such as `sensor.gas_price_energy_tax`, `sensor.gas_price_purchasing_cost`, etc.
+- `sensor.energyzero_gql_sensor_market_incl`: The market price of gas including VAT.
+- `sensor.energyzero_gql_sensor_all_in`: The all-in price of gas including VAT and all additional costs.
+- Additional sensors for each dynamic cost component such as `sensor.energyzero_gql_sensor_cost_energy_tax`, `sensor.energyzero_gql_sensor_cost_purchasing_cost`, etc.
 
 ## Attribution
 
