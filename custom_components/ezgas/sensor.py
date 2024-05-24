@@ -7,6 +7,8 @@ from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.const import DEVICE_CLASS_MONETARY
 from homeassistant.helpers.entity import Entity
 from homeassistant.util import Throttle
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.core import HomeAssistant
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -16,26 +18,26 @@ MIN_TIME_BETWEEN_UPDATES = timedelta(days=1)
 
 ATTRIBUTION = "Data provided by EnergyZero"
 
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
-    async_add_entities(await setup_sensors())
+async def async_setup_platform(hass: HomeAssistant, config, async_add_entities, discovery_info=None):
+    async_add_entities(await setup_sensors(hass))
 
-async def async_setup_entry(hass, entry, async_add_entities):
-    async_add_entities(await setup_sensors())
+async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
+    async_add_entities(await setup_sensors(hass))
 
-async def setup_sensors():
+async def setup_sensors(hass: HomeAssistant):
     entities = [
-        EnergyZeroGasPriceSensor("Gas Price Market", "market_incl"),
-        EnergyZeroGasPriceSensor("Gas Price All-in", "all_in")
+        EnergyZeroGasPriceSensor(hass, "Gas Price Market", "market_incl"),
+        EnergyZeroGasPriceSensor(hass, "Gas Price All-in", "all_in")
     ]
 
-    data = get_current_gas_price()
+    data = await hass.async_add_executor_job(get_current_gas_price)
     current_data = data.get('data', {}).get('current', {})
     prices = current_data.get('prices', [])
     if prices:
         additional_costs = prices[0].get('additionalCosts', [])
         for cost in additional_costs:
             name = cost.get('name', 'Unknown')
-            entities.append(EnergyZeroGasPriceSensor(f"Gas Price {name}", f"cost_{name.replace(' ', '_').lower()}"))
+            entities.append(EnergyZeroGasPriceSensor(hass, f"Gas Price {name}", f"cost_{name.replace(' ', '_').lower()}"))
 
     return entities
 
@@ -94,7 +96,8 @@ def get_current_gas_price(tz='Europe/Amsterdam', newprices_hour=6):
     )
 
 class EnergyZeroGasPriceSensor(Entity):
-    def __init__(self, name, price_type):
+    def __init__(self, hass: HomeAssistant, name, price_type):
+        self.hass = hass
         self._name = name
         self._price_type = price_type
         self._state = None
@@ -123,9 +126,9 @@ class EnergyZeroGasPriceSensor(Entity):
     def extra_state_attributes(self):
         return self._attributes
 
-    def _update(self):
+    async def _update(self):
         try:
-            data = get_current_gas_price()
+            data = await self.hass.async_add_executor_job(get_current_gas_price)
             current_data = data.get('data', {}).get('current', {})
             prices = current_data.get('prices', [])
             if not prices:
@@ -159,8 +162,8 @@ class EnergyZeroGasPriceSensor(Entity):
         except Exception as e:
             _LOGGER.error("Error fetching gas price: %s", e)
 
-    def update(self):
+    async def async_update(self):
         # Ensure the update happens around 06:00 Amsterdam time
         now = datetime.now(pytz.timezone('Europe/Amsterdam'))
         if now.hour == 6 and now.minute < 5:
-            self._update()
+            await self._update()
