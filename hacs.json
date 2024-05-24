@@ -1,0 +1,14 @@
+{
+  "name": "EnergyZero Gas Price Sensor",
+  "description": "A Home Assistant integration to fetch and display gas prices from the EnergyZero API, including market price, all-in price, and additional cost components.",
+  "domain": "energyzero_gas_price_sensor",
+  "repository": "https://github.com/Sikerdebaard/energyzero-all-in-gasprice",
+  "documentation": "https://github.com/Sikerdebaard/energyzero-all-in-gasprice",
+  "requirements": ["pytz"],
+  "codeowners": [
+    "@Sikerdebaard"
+  ],
+  "config_flow": false,
+  "iot_class": "cloud_polling",
+  "version": "1.0.0"
+}
