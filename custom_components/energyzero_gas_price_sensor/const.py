@@ -1,4 +1,4 @@
-DOMAIN = "energyzero_gas_price_sensor"
+DOMAIN = "energyzero"
 SERVICE_TYPE_DEVICE_NAMES = {
     "today_gas": "Gas Prices",
 }
